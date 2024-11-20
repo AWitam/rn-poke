@@ -3,20 +3,17 @@ import mockPokemon from './mock-pokemon.json';
 import { PokemonDetailsView } from '@/components/PokemonDetails';
 
 interface PokemonData {
+  id: number;
   name: string;
-  sprites: {
-    other: {
-      'official-artwork': {
-        front_default: string;
-      };
-    };
-  };
+  image: string;
+  description: string;
+  height: number;
+  weight: number;
+  gender: string;
 }
 
 export const FavoritePokemonView = () => {
-  const [storedPokemon, setPokemon] = useAsyncStorage<PokemonData>('@favoritePokemon', mockPokemon);
+  const [storedPokemon, _setPokemon] = useAsyncStorage<PokemonData>('@favoritePokemon', mockPokemon);
 
-  return (
-    <PokemonDetailsView name={storedPokemon.name} imgUrl={storedPokemon.sprites.other['official-artwork'].front_default} />
-  );
+  return <PokemonDetailsView {...storedPokemon} />;
 };
