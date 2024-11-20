@@ -16,10 +16,7 @@ const MAPPING = {
   'heart.fill': 'favorite',
   'list.bullet': 'format-list-bulleted',
 } as Partial<
-  Record<
-    import('expo-symbols').SymbolViewProps['name'],
-    React.ComponentProps<typeof MaterialIcons>['name']
-  >
+  Record<import('expo-symbols').SymbolViewProps['name'], React.ComponentProps<typeof MaterialIcons>['name']>
 >;
 
 export type IconSymbolName = keyof typeof MAPPING;
