@@ -7,7 +7,7 @@ export const useAsyncStorage = <T>(key: string, initialValue: T) => {
   const getItem = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
-      return jsonValue != null ? JSON.parse(jsonValue) : initialValue;
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       return initialValue;
     }

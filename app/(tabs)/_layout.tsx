@@ -32,7 +32,7 @@ export default function TabLayout() {
         options={{
           headerShown: true,
           headerRightContainerStyle: {
-            paddingHorizontal: 20,
+            paddingRight: 20,
           },
           headerRight: ({ tintColor, ...props }) => (
             <HeaderIconButton
