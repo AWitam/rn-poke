@@ -40,6 +40,9 @@ const fetchPokemonDetails = async (url: string) => {
     image: data.sprites.other['official-artwork'].front_default,
     height: data.height,
     weight: data.weight,
+    // TODO: Add description and gender
+    description: 'TODO: Add description',
+    gender: 'Unknown',
   } satisfies PokemonDetails;
 
   return pokemonData;

@@ -6,7 +6,7 @@ import { usePokemons } from '@/hooks/usePokemons';
 import React from 'react';
 import { View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
 
-export default function TabTwoScreen() {
+export default function PokemonsList() {
   const { data, fetchNextPage, hasNextPage, isLoading } = usePokemons();
   const { favoritePokemon, setFavoritePokemon } = useFavoritePokemonContext();
 
