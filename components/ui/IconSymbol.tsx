@@ -3,7 +3,7 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { SymbolWeight } from 'expo-symbols';
 import React from 'react';
-import { OpaqueColorValue, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { OpaqueColorValue, StyleProp, TextStyle } from 'react-native';
 
 // Add your SFSymbol to MaterialIcons mappings here.
 const MAPPING = {
@@ -16,10 +16,7 @@ const MAPPING = {
   'heart.fill': 'favorite',
   'list.bullet': 'format-list-bulleted',
 } as Partial<
-  Record<
-    import('expo-symbols').SymbolViewProps['name'],
-    React.ComponentProps<typeof MaterialIcons>['name']
-  >
+  Record<import('expo-symbols').SymbolViewProps['name'], React.ComponentProps<typeof MaterialIcons>['name']>
 >;
 
 export type IconSymbolName = keyof typeof MAPPING;
