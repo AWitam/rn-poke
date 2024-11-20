@@ -7,6 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { HeaderIconButton } from '@/components/HeaderIconButton';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -27,8 +28,20 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name="(favorite)/index"
         options={{
+          headerShown: true,
+          headerRightContainerStyle: {
+            paddingHorizontal: 20,
+          },
+          headerRight: ({ tintColor, ...props }) => (
+            <HeaderIconButton
+              name={'heart'}
+              onPress={function (): void {
+                console.log('Favorite button pressed');
+              }}
+            />
+          ),
           title: 'Favorite',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="heart.fill" color={color} />,
         }}
