@@ -1,34 +1,63 @@
-import { StyleSheet } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+import { PokemonCard } from '@/components/PokemonCard';
 import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import { useFavoritePokemonContext } from '@/context/favorite-pokemon-context';
+import { usePokemons } from '@/hooks/usePokemons';
+import React from 'react';
+import { View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
 
-export default function TabTwoScreen() {
+export default function PokemonsList() {
+  const { data, fetchNextPage, hasNextPage, isLoading } = usePokemons();
+  const { favoritePokemon, setFavoritePokemon } = useFavoritePokemonContext();
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <ThemedView style={styles.container}>
+      {isLoading ? (
+        <ThemedText>Loading...</ThemedText>
+      ) : (
+        <FlatList
+          data={data?.pages.map((page) => page.results).flat()}
+          renderItem={({ item }) => {
+            return (
+              <PokemonCard
+                name={item.name}
+                id={item.id}
+                image={item.image}
+                description={''}
+                isFavorite={favoritePokemon?.id === item.id}
+                onFavoritePress={() => {
+                  favoritePokemon?.id === item.id ? setFavoritePokemon(null) : setFavoritePokemon(item);
+                }}
+                onPress={function (): void {
+                  console.log(`Pressed ${item.name}`);
+                }}
+              />
+            );
+          }}
+          keyExtractor={(item) => `${item.name}-${item.id}`}
+          onEndReached={() => {
+            if (hasNextPage) {
+              fetchNextPage();
+            }
+          }}
         />
-      }>
-      <ThemedText>Here goes the list</ThemedText>
-    </ParallaxScrollView>
+      )}
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
   },
 });

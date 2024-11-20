@@ -37,15 +37,16 @@ export default function TabLayout() {
           headerRightContainerStyle: {
             paddingRight: 20,
           },
-          headerRight: ({ tintColor, ...props }) => (
-            favoritePokemon && <HeaderIconButton
-              name={'heart.fill'}
-              onPress={() => {
-                setFavoritePokemon(favoritePokemon ? null : mockPokemon);
-              }}
-              {...props}
-            />
-          ),
+          headerRight: ({ tintColor, ...props }) =>
+            favoritePokemon && (
+              <HeaderIconButton
+                name={'heart.fill'}
+                onPress={() => {
+                  setFavoritePokemon(favoritePokemon ? null : mockPokemon);
+                }}
+                {...props}
+              />
+            ),
           title: 'Favorite',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="heart.fill" color={color} />,
         }}
@@ -53,6 +54,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="list"
         options={{
+          headerShown: true,
           title: 'Pokemons',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={color} />,
         }}
