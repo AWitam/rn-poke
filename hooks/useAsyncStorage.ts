@@ -14,8 +14,6 @@ export const useAsyncStorage = <T>(key: string, initialValue?: T | null) => {
   };
 
   const setItem = async (value: T) => {
-
-    console.log('setItem', value);
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem(key, jsonValue);
