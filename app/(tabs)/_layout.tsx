@@ -8,9 +8,12 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { HeaderIconButton } from '@/components/HeaderIconButton';
+import mockPokemon from '@/mocks/mock-pokemon.json';
+import { FavoritePokemonProvider, useFavoritePokemonContext } from '@/context/favorite-pokemon-context';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { favoritePokemon, setFavoritePokemon } = useFavoritePokemonContext();
 
   return (
     <Tabs
@@ -35,11 +38,12 @@ export default function TabLayout() {
             paddingRight: 20,
           },
           headerRight: ({ tintColor, ...props }) => (
-            <HeaderIconButton
-              name={'heart'}
-              onPress={function (): void {
-                console.log('Favorite button pressed');
+            favoritePokemon && <HeaderIconButton
+              name={'heart.fill'}
+              onPress={() => {
+                setFavoritePokemon(favoritePokemon ? null : mockPokemon);
               }}
+              {...props}
             />
           ),
           title: 'Favorite',
