@@ -6,5 +6,5 @@ export default function PokemonDetailsScreen() {
   const pokemonId = useRouteId();
   const pokemon = usePokemonData({ pokemonId });
 
-  return pokemon ? <PokemonDetailsView colorName={'background'} pokemon={pokemon} /> : null;
+  return pokemon ? <PokemonDetailsView {...pokemon} /> : null;
 }

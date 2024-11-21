@@ -8,25 +8,19 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 import { Colors } from '@/constants/Colors';
 
 interface PokemonDetailsProps {
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark;
-  pokemon: {
+  name: string;
+  image: string;
+  height: number;
+  weight: number;
+  baseExperience: number;
+  abilities?: {
     name: string;
-    image: string;
-    height: number;
-    weight: number;
-    baseExperience: number;
-    abilities?: {
-      name: string;
-      effect: string;
-    }[];
-  };
+    effect: string;
+  }[];
 }
 
-export const PokemonDetailsView = ({
-  colorName,
-  pokemon: { name, image, abilities, height, weight, baseExperience },
-}: PokemonDetailsProps) => {
-  const backgroundColor = useThemeColor({ light: Colors.light[colorName], dark: Colors.dark[colorName] }, colorName);
+export const PokemonDetailsView = ({ name, image, abilities, height, weight, baseExperience }: PokemonDetailsProps) => {
+  const backgroundColor = useThemeColor({ light: Colors.light.background, dark: Colors.dark.background }, 'background');
   const cardBackgroundColor = useThemeColor({ light: Colors.light.card, dark: Colors.dark.card }, 'card');
 
   return (

@@ -47,7 +47,7 @@ export default function PokemonListScreen() {
           setSelectedId(null);
         }}>
         <BottomSheetScrollView style={styles.contentContainer}>
-          {pokemon && <PokemonDetailsView pokemon={pokemon} colorName="background" />}
+          {pokemon && <PokemonDetailsView {...pokemon} />}
         </BottomSheetScrollView>
       </BottomSheetModal>
       <PokemonListView
