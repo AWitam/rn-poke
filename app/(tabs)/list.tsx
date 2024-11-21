@@ -3,6 +3,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useFavoritePokemonContext } from '@/context/favorite-pokemon-context';
 import { usePokemons } from '@/hooks/usePokemons';
+import { Link } from 'expo-router';
 import React from 'react';
 import { View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
 
@@ -27,9 +28,6 @@ export default function PokemonsList() {
                 isFavorite={favoritePokemon?.id === item.id}
                 onFavoritePress={() => {
                   favoritePokemon?.id === item.id ? setFavoritePokemon(null) : setFavoritePokemon(item);
-                }}
-                onPress={function (): void {
-                  console.log(`Pressed ${item.name}`);
                 }}
               />
             );

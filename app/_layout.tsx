@@ -37,6 +37,7 @@ export default function RootLayout() {
         <FavoritePokemonProvider>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name='[id]' />
             <Stack.Screen name="+not-found" />
           </Stack>
         </FavoritePokemonProvider>
