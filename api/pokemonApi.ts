@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { Ability, AbilityRawResponse, PokemonDetails, PokemonListResponse, PokemonRawResponse } from './types';
+import {  mapRawAbilityToAbility } from './mappers';
 
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
@@ -32,18 +34,36 @@ export async function fetchPokemonList({ limit, offset }: FetchPokemonListOption
 }
 
 const fetchPokemonDetails = async (url: string) => {
-  const { data } = await axios.get<PokemonRawResponse>(url);
+  try {
+    const { data } = await axios.get<PokemonRawResponse>(url);
 
-  const pokemonData = {
-    id: data.id,
-    name: data.name,
-    image: data.sprites.other['official-artwork'].front_default,
-    height: data.height,
-    weight: data.weight,
-    // TODO: Add description and gender
-    description: 'TODO: Add description',
-    gender: 'Unknown',
-  } satisfies PokemonDetails;
+    const abilities = await Promise.all(
+      data.abilities.map(async (ability) => fetchAbilititesDetails(ability.ability.url)),
+    );
 
-  return pokemonData;
+    const pokemonData = {
+      id: data.id,
+      name: data.name,
+      image: data.sprites.other['official-artwork'].front_default,
+      height: data.height,
+      weight: data.weight,
+      baseExperience: data.base_experience,
+      abilities,
+    } satisfies PokemonDetails;
+
+    return pokemonData;
+  } catch (error) {
+    console.error('Failed to fetch pokemon details', error);
+    throw error;
+  }
+};
+
+const fetchAbilititesDetails = async (url: string) => {
+  try {
+    const { data } = await axios.get<AbilityRawResponse>(url);
+    return mapRawAbilityToAbility(data);
+  } catch (error) {
+    console.error('Failed to fetch ability details', error);
+    throw error;   
+  }
 };

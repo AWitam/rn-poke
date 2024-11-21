@@ -6,10 +6,13 @@ interface PokemonData {
   id: number;
   name: string;
   image: string;
-  description?: string;
   height: number;
   weight: number;
-  gender?: string;
+  baseExperience: number;
+  abilities: {
+    name: string;
+    effect: string;
+  }[];
 }
 
 interface FavoritePokemonContext {
