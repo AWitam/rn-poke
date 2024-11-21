@@ -5,9 +5,5 @@ import { useFavoritePokemonContext } from '@/context/favorite-pokemon-context';
 export const FavoritePokemonView = () => {
   const { favoritePokemon } = useFavoritePokemonContext();
 
-  return favoritePokemon ? (
-    <PokemonDetailsView pokemon={favoritePokemon} colorName="background" />
-  ) : (
-    <EmptyPokemonView />
-  );
+  return favoritePokemon ? <PokemonDetailsView {...favoritePokemon} /> : <EmptyPokemonView />;
 };
