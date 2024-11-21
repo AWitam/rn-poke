@@ -8,12 +8,14 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { FavoritePokemonProvider } from '@/context/favorite-pokemon-context';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { focusManager, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AppState, AppStateStatus, Platform } from 'react-native';
+import { PokemonHeaderTitle } from '@/components/PokemonHeaderTitle';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({});
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -36,7 +38,13 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <FavoritePokemonProvider>
           <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
+            <Stack.Screen
+              name="(pokemon)/[id]"
+              options={{
+                headerTitle: () => <PokemonHeaderTitle />,
+              }}
+            />
             <Stack.Screen name="+not-found" />
           </Stack>
         </FavoritePokemonProvider>

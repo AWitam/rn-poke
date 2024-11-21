@@ -14,6 +14,7 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'heart.fill': 'favorite',
+  'heart': 'favorite-border',
   'list.bullet': 'format-list-bulleted',
 } as Partial<
   Record<import('expo-symbols').SymbolViewProps['name'], React.ComponentProps<typeof MaterialIcons>['name']>

@@ -1,7 +1,7 @@
 import { fetchPokemonList } from '@/api/pokemonApi';
 import { InfiniteData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
-type PokemonListResponse = Awaited<ReturnType<typeof fetchPokemonList>>;
+export type PokemonListResponse = Awaited<ReturnType<typeof fetchPokemonList>>;
 
 export const usePokemons = () => {
   return useInfiniteQuery<PokemonListResponse, Error, InfiniteData<PokemonListResponse>, readonly string[], number>({
@@ -13,5 +13,6 @@ export const usePokemons = () => {
     getNextPageParam: (lastPage) => {
       return lastPage.next ? lastPage.next : null;
     },
+    staleTime: 1000 * 60 * 60 * 72, // 72 hours
   });
 };
