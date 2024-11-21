@@ -31,6 +31,9 @@ export default function PokemonsListView() {
               />
             );
           }}
+          // onRefresh={() => {
+          //   fetchNextPage()
+          // }}
           keyExtractor={(item) => `${item.name}-${item.id}`}
           onEndReached={() => {
             if (hasNextPage) {
