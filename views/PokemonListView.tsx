@@ -4,9 +4,13 @@ import { ThemedView } from '@/components/ThemedView';
 import { useFavoritePokemonContext } from '@/context/favorite-pokemon-context';
 import { usePokemons } from '@/hooks/usePokemons';
 import React from 'react';
-import {  FlatList, StyleSheet,  StatusBar } from 'react-native';
+import { FlatList, StyleSheet, StatusBar } from 'react-native';
 
-export default function PokemonsListView() {
+interface PokemonsListViewProps {
+  onPokemonPress: (id: number) => void;
+}
+
+export default function PokemonsListView({ onPokemonPress }: PokemonsListViewProps) {
   const { data, fetchNextPage, hasNextPage, isLoading } = usePokemons();
   const { favoritePokemon, setFavoritePokemon } = useFavoritePokemonContext();
 
@@ -28,6 +32,7 @@ export default function PokemonsListView() {
                 onFavoritePress={() => {
                   favoritePokemon?.id === item.id ? setFavoritePokemon(null) : setFavoritePokemon(item);
                 }}
+                onPress={() => onPokemonPress(item.id)}
               />
             );
           }}
@@ -49,13 +54,7 @@ export default function PokemonsListView() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    marginTop: 8,
   },
   title: {
     fontSize: 32,

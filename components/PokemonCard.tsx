@@ -12,6 +12,7 @@ interface PokemonCardProps {
   name: string;
   description: string;
   isFavorite: boolean;
+  onPress: () => void;
   onFavoritePress: () => void;
 }
 
@@ -19,19 +20,20 @@ import React, { forwardRef } from 'react';
 import { useRouter } from 'expo-router';
 
 export const PokemonCard = forwardRef<View, PokemonCardProps>(
-  ({ id, name, image, isFavorite, onFavoritePress }, ref) => {
-    const color = useThemeColor({ light: Colors.light.tint, dark: Colors.dark.tint }, 'tint');
+  ({ id, name, image, isFavorite, onFavoritePress, onPress }, ref) => {
+    const cardColor = useThemeColor({ light: Colors.light.card, dark: Colors.dark.card }, 'card');
+    const iconColor = useThemeColor({ light: Colors.light.tint, dark: Colors.dark.tint }, 'tint');
     const router = useRouter();
 
     return (
-      <Pressable ref={ref} onPress={() => router.push(`/${id}`, { relativeToDirectory: false })}>
-        <View style={styles.container}>
+      <Pressable ref={ref} onPress={onPress}>
+        <View style={{ ...styles.container, backgroundColor: cardColor }}>
           <Image source={image} style={styles.image} />
           <View style={{ flex: 1 }}>
             <ThemedText type="subtitle">{capitalize(name)}</ThemedText>
           </View>
           <Pressable onPress={onFavoritePress}>
-            <IconSymbol size={24} name={isFavorite ? 'heart.fill' : 'heart'} color={color} />
+            <IconSymbol size={24} name={isFavorite ? 'heart.fill' : 'heart'} color={iconColor} />
           </Pressable>
         </View>
       </Pressable>
@@ -46,6 +48,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
+    borderRadius: 10,
+    marginVertical: 8,
+    marginHorizontal: 16,
   },
   image: {
     width: 50,

@@ -3,12 +3,15 @@ import ParallaxScrollView from './ParallaxScrollView';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { Image } from 'expo-image';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 const image = require('@/assets/images/pokeball.png');
 
 export const EmptyPokemonView = () => {
+  const color = useThemeColor({ light: Colors.light.backround, dark: Colors.dark.background }, 'background');
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+      backgroundColor={color}
       headerImage={
         <ThemedView style={styles.imageContainer}>
           <Image source={image} contentFit="contain" style={styles.image} />

@@ -8,9 +8,10 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { FavoritePokemonProvider } from '@/context/favorite-pokemon-context';
-import { focusManager, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AppState, AppStateStatus, Platform } from 'react-native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PokemonHeaderTitle } from '@/components/PokemonHeaderTitle';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -37,16 +38,20 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <FavoritePokemonProvider>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
-            <Stack.Screen
-              name="(pokemon)/[id]"
-              options={{
-                headerTitle: () => <PokemonHeaderTitle />,
-              }}
-            />
-            <Stack.Screen name="+not-found" />
-          </Stack>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <BottomSheetModalProvider>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false, title: '' }} />
+                <Stack.Screen
+                  name="(pokemon)/[id]"
+                  options={{
+                    headerTitle: () => <PokemonHeaderTitle />,
+                  }}
+                />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </BottomSheetModalProvider>
+          </GestureHandlerRootView>
         </FavoritePokemonProvider>
         <StatusBar style="auto" />
       </ThemeProvider>
