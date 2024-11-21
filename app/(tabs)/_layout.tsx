@@ -8,7 +8,6 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { HeaderIconButton } from '@/components/HeaderIconButton';
-import mockPokemon from '@/mocks/mock-pokemon.json';
 import { FavoritePokemonProvider, useFavoritePokemonContext } from '@/context/favorite-pokemon-context';
 
 export default function TabLayout() {
@@ -42,7 +41,7 @@ export default function TabLayout() {
               <HeaderIconButton
                 name={'heart.fill'}
                 onPress={() => {
-                  setFavoritePokemon(favoritePokemon ? null : mockPokemon);
+                  setFavoritePokemon(favoritePokemon ?? null);
                 }}
                 {...props}
               />

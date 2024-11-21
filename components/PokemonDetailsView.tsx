@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import ParallaxScrollView from './ParallaxScrollView';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
@@ -12,78 +12,105 @@ interface PokemonDetailsProps {
   pokemon: {
     name: string;
     image: string;
-    description?: string;
     height: number;
     weight: number;
-    gender?: string;
+    baseExperience: number;
+    abilities?: {
+      name: string;
+      effect: string;
+    }[];
   };
 }
 
 export const PokemonDetailsView = ({
   colorName,
-  pokemon: { name, image, description, height, weight, gender },
+  pokemon: { name, image, abilities, height, weight, baseExperience },
 }: PokemonDetailsProps) => {
-  const color = useThemeColor({ light: Colors.light[colorName], dark: Colors.dark[colorName] }, colorName);
-  const styles = makeStyles(color);
+  const backgroundColor = useThemeColor({ light: Colors.light[colorName], dark: Colors.dark[colorName] }, colorName);
+  const cardBackgroundColor = useThemeColor({ light: Colors.light.card, dark: Colors.dark.card }, 'card');
 
   return (
     <ParallaxScrollView
-      backgroundColor={color}
+      backgroundColor={backgroundColor}
       headerImage={
-        <ThemedView style={styles.imageContainer}>
+        <ThemedView style={[styles.imageContainer]}>
           <Image source={image} contentFit="contain" style={styles.image} />
         </ThemedView>
       }>
-    <ThemedView style={styles.bodyContainer}>
-      <ThemedText type="title">{capitalize(name)}</ThemedText>
-      <ThemedText type="subtitle">{description}</ThemedText>
-      <View style={styles.detailsContainer}>
-        <View style={styles.attributeContainer}>
-          <ThemedText type="defaultSemiBold">Height</ThemedText>
-          <ThemedText>{height}</ThemedText>
+      <ThemedView style={styles.bodyContainer}>
+        <ThemedText type="title">{capitalize(name)}</ThemedText>
+        <View style={[styles.detailsContainer, { backgroundColor: cardBackgroundColor }]}>
+          <View style={styles.rowContainer}>
+            <View style={styles.attributeContainer}>
+              <ThemedText type="defaultSemiBold">Height: </ThemedText>
+              <ThemedText>{height}</ThemedText>
+            </View>
+            <View style={styles.attributeContainer}>
+              <ThemedText type="defaultSemiBold">Weight: </ThemedText>
+              <ThemedText>{weight}</ThemedText>
+            </View>
+          </View>
+          <View style={styles.divider} />
+          <View style={styles.rowContainer}>
+            <View style={styles.attributeContainer}>
+              <ThemedText type="defaultSemiBold">Base experience: </ThemedText>
+              <ThemedText>{baseExperience}</ThemedText>
+            </View>
+          </View>
         </View>
-        <View style={styles.attributeContainer}>
-          <ThemedText type="defaultSemiBold">Weight</ThemedText>
-          <ThemedText>{weight}</ThemedText>
-        </View>
-        <View style={styles.attributeContainer}>
-          <ThemedText type="defaultSemiBold">Gender</ThemedText>
-          <ThemedText>{gender}</ThemedText>
-        </View>
-      </View>
-    </ThemedView>
+        <ThemedText type="subtitle">Abilities: </ThemedText>
+        {abilities?.map((ability) => (
+          <View key={ability.name} style={[styles.abilityContainer]}>
+            <ThemedText type="defaultSemiBold">{ability.name}</ThemedText>
+            <ThemedText>{ability.effect}</ThemedText>
+          </View>
+        ))}
+      </ThemedView>
     </ParallaxScrollView>
   );
 };
 
-const makeStyles = (tint: string) =>
-  StyleSheet.create({
-    imageContainer: {
-      display: 'flex',
-      flex: 1,
-      width: '100%',
-      justifyContent: 'flex-end',
-      backgroundColor: 'transparent',
-    },
-    image: {
-      width: '100%',
-      height: 200,
-    },
-    bodyContainer: {
-      flex: 1,
-      gap: 16,
-      backgroundColor: tint,
-    },
-    detailsContainer: {
-      marginVertical: 16,
-      padding: 16,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      borderRadius: 8,
-      backgroundColor: tint,
-    },
-    attributeContainer: {
-      display: 'flex',
-      alignItems: 'center',
-    },
-  });
+const styles = StyleSheet.create({
+  imageContainer: {
+    display: 'flex',
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
+    backgroundColor: 'transparent',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+  },
+  bodyContainer: {
+    flex: 1,
+    gap: 16,
+  },
+  detailsContainer: {
+    marginVertical: 16,
+    padding: 16,
+    justifyContent: 'space-between',
+    borderRadius: 8,
+  },
+  rowContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  attributeContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  abilityContainer: {
+    marginVertical: 16,
+    flex: 1,
+    gap: 8,
+  },
+  divider: {
+    height: 1,
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginVertical: 16,
+  },
+});

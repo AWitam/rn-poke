@@ -5,6 +5,7 @@ import BottomSheet, {
   BottomSheetModal,
   BottomSheetModalProps,
   BottomSheetModalProvider,
+  BottomSheetScrollView,
   BottomSheetView,
   useBottomSheet,
 } from '@gorhom/bottom-sheet';
@@ -31,29 +32,23 @@ export default function PokemonListScreen() {
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-
   return (
     <ThemedView style={styles.container}>
       <BottomSheetModal
         ref={bottomSheetModalRef}
-        onChange={handleSheetChanges}
         enableDynamicSizing={true}
         enablePanDownToClose={true}
         handleIndicatorStyle={{ backgroundColor: tintColor }}
         backgroundStyle={{
           backgroundColor: color,
         }}
-        snapPoints={['50%', '90%']}
-        // backdropComponent={CustomBackground}
+        snapPoints={['70%', '100%']}
         onDismiss={() => {
           setSelectedId(null);
         }}>
-        <BottomSheetView style={styles.contentContainer}>
+        <BottomSheetScrollView style={styles.contentContainer}>
           {pokemon && <PokemonDetailsView pokemon={pokemon} colorName="background" />}
-        </BottomSheetView>
+        </BottomSheetScrollView>
       </BottomSheetModal>
       <PokemonListView
         onPokemonPress={(id) => {

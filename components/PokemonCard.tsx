@@ -30,7 +30,7 @@ export const PokemonCard = forwardRef<View, PokemonCardProps>(
         <View style={{ ...styles.container, backgroundColor: cardColor }}>
           <Image source={image} style={styles.image} />
           <View style={{ flex: 1 }}>
-            <ThemedText type="subtitle">{capitalize(name)}</ThemedText>
+            <ThemedText type="defaultSemiBold">{capitalize(name)}</ThemedText>
           </View>
           <Pressable onPress={onFavoritePress}>
             <IconSymbol size={24} name={isFavorite ? 'heart.fill' : 'heart'} color={iconColor} />

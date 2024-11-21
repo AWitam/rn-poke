@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     lineHeight: 32,
   },
   subtitle: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontSize: 22,
+    fontWeight: '600',
   },
   link: {
     lineHeight: 30,
