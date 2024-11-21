@@ -1,4 +1,4 @@
-import { FavoritePokemonView } from '@/features/favorite-pokemon/favorite-pokemon-view';
+import { FavoritePokemonView } from '@/views/FavoritePokemonView';
 
 export default function FavoritePokemonScreen() {
   return <FavoritePokemonView />;
