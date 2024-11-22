@@ -16,6 +16,7 @@ const MAPPING = {
   'heart.fill': 'favorite',
   'heart': 'favorite-border',
   'list.bullet': 'format-list-bulleted',
+  'camera.fill': 'camera',
 } as Partial<
   Record<import('expo-symbols').SymbolViewProps['name'], React.ComponentProps<typeof MaterialIcons>['name']>
 >;
