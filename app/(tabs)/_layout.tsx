@@ -30,7 +30,7 @@ export default function TabLayout() {
         }),
       }}>
       <Tabs.Screen
-        name="(favorite)/index"
+        name="index"
         options={{
           headerShown: true,
           headerRightContainerStyle: {
@@ -56,6 +56,14 @@ export default function TabLayout() {
           headerShown: true,
           title: 'Pokemons',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="list.bullet" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="camera"
+        options={{
+          headerShown: true,
+          title: 'Camera',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="camera.fill" color={color} />,
         }}
       />
     </Tabs>
