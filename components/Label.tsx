@@ -6,7 +6,7 @@ const AnimatedText = Animated.createAnimatedComponent(TextInput);
 Animated.addWhitelistedNativeProps({ text: true });
 
 export const Label = ({ sharedValue }: { sharedValue: Animated.SharedValue<string> }) => {
-  const textProps = useAnimatedProps(() => ({ text: sharedValue.value }), [sharedValue.value]);
+  const textProps = useAnimatedProps(() => ({ text: sharedValue.get() }), [sharedValue.value]);
 
   return (
     <AnimatedText
@@ -29,5 +29,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: 'white',
     textAlign: 'center',
+    minWidth: 200,
   },
 });
