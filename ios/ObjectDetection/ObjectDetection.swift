@@ -1,49 +1,59 @@
 import MLKit
 import VisionCamera
+import ExpoModulesCore
 
 @objc(ObjectDetectionPlugin)
 public class ObjectDetectionPlugin: FrameProcessorPlugin {
   public override init(proxy: VisionCameraProxyHolder, options: [AnyHashable: Any]! = [:]) {
     super.init(proxy: proxy, options: options)
   }
-
+  
   static var DefaultOptions = {
-    let options = ImageLabelerOptions()
-    options.confidenceThreshold = 0.5
+    let options = ObjectDetectorOptions()
+    options.shouldEnableClassification = true
+    options.shouldEnableMultipleObjects = true
     return options
   }()
-
-  static var labeler = ImageLabeler.imageLabeler(options: DefaultOptions)
-
+  
+  static var detector = ObjectDetector.objectDetector(options: DefaultOptions)
+  
   public override func callback(_ frame: Frame, withArguments arguments: [AnyHashable: Any]?)
-    -> Any?
+  -> Any?
   {
     let image = VisionImage(buffer: frame.buffer)
     image.orientation = .up
-
-    var objectAttributes: [Any] = []
-
+    
+    var results: [Any] = []
+    var objects: [Object]
     do {
-      let objects = try ObjectDetectionPlugin.labeler.results(in: image)
-
-      if objects.isEmpty {
-        return nil
-      }
-
-      if !objects.isEmpty {
-        for label in objects {
-          objectAttributes.append([
-            "confidence": label.confidence,
-            "label": label.text,
-            "index": label.index,
-          ])
-        }
-      }
-
-    } catch {
+      objects = try ObjectDetectionPlugin.detector.results(in: image)
+    } catch let error {
+      print("Failed to detect object with error: \(error.localizedDescription).")
       return nil
     }
-
-    return objectAttributes
+    guard !objects.isEmpty else {
+      print("Object detector returned no results.")
+      return nil
+    }
+    
+    for object in objects {
+      let objFrame = object.frame
+      let trackingID = object.trackingID
+      
+      
+      object.labels.enumerated().forEach { (index, label) in
+        return results.append([
+          "label": label.text,
+          "confidence": label.confidence,
+          "x":objFrame.origin.x,
+          "y": objFrame.origin.y,
+          "width": objFrame.size.width,
+          "height": objFrame.size.height
+        ])
+      }
+      
+    }
+    
+    return results
   }
 }

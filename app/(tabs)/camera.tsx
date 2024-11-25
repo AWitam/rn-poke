@@ -1,13 +1,11 @@
 import { Label } from '@/components/Label';
 import { ThemedText } from '@/components/ThemedText';
-import { detectObjects } from '@/hooks/useObjectDetection';
+import { useObjectDetection } from '@/hooks/useObjectDetection';
 import { useAppState } from '@react-native-community/hooks';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
-import { Camera, useCameraDevice, useCameraPermission, useFrameProcessor } from 'react-native-vision-camera';
-import { Worklets } from 'react-native-worklets-core';
+import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
 
 export default function CameraScreen() {
   const device = useCameraDevice('back');
@@ -16,22 +14,8 @@ export default function CameraScreen() {
   const isFocused = useIsFocused();
   const appState = useAppState();
   const isActive = isFocused && appState === 'active';
-  const label = useSharedValue('Nothing detected');
 
-  const updateLabel = Worklets.createRunOnJS((prediction: string) => {
-    label.set(prediction);
-  });
-
-  const frameProcessor = useFrameProcessor((frame) => {
-    'worklet';
-    const objects = detectObjects(frame);
-
-    const prediction = objects.find((object) => object.confidence > 0.5)?.label ?? 'Nothing detected';
-
-    console.log('Detected:', prediction);
-
-    updateLabel(prediction);
-  }, []);
+  const { frameProcessor, label } = useObjectDetection();
 
   useEffect(() => {
     if (!hasPermission) {
