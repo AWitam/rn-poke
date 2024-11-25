@@ -4,19 +4,19 @@ import { detectObjects } from '@/hooks/useObjectDetection';
 import { useAppState } from '@react-native-community/hooks';
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { View, StyleSheet } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 import { Camera, useCameraDevice, useCameraPermission, useFrameProcessor } from 'react-native-vision-camera';
-import { useRunOnJS,  Worklets } from 'react-native-worklets-core';
+import { Worklets } from 'react-native-worklets-core';
 
 export default function CameraScreen() {
+  const device = useCameraDevice('back');
+  const { hasPermission, requestPermission } = useCameraPermission();
+
   const isFocused = useIsFocused();
   const appState = useAppState();
   const isActive = isFocused && appState === 'active';
-  const device = useCameraDevice('back');
-  const { hasPermission, requestPermission } = useCameraPermission();
   const label = useSharedValue('Nothing detected');
-
 
   const updateLabel = Worklets.createRunOnJS((prediction: string) => {
     label.set(prediction);
@@ -41,11 +41,17 @@ export default function CameraScreen() {
 
   if (device == null) return <NoCameraDeviceError />;
 
-  const animatedText = useAnimatedStyle
-
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} frameProcessor={frameProcessor} fps={30} device={device} isActive={isActive} />
+      <Camera
+        style={styles.camera}
+        frameProcessor={frameProcessor}
+        fps={30}
+        device={device}
+        isActive={isActive}
+        enableZoomGesture={true}
+        resizeMode={'contain'}
+      />
 
       <Label sharedValue={label} />
     </View>

@@ -6,7 +6,7 @@ const AnimatedText = Animated.createAnimatedComponent(TextInput);
 Animated.addWhitelistedNativeProps({ text: true });
 
 export const Label = ({ sharedValue }: { sharedValue: Animated.SharedValue<string> }) => {
-  const textProps = useAnimatedProps(() => ({ text: sharedValue.get() }), [sharedValue.value]);
+  const textProps = useAnimatedProps(() => ({ text: sharedValue.get() }), [sharedValue.get()]);
 
   return (
     <AnimatedText
