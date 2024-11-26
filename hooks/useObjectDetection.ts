@@ -1,13 +1,12 @@
 import { Skia } from '@shopify/react-native-skia';
-import { useFrameProcessor, useSkiaFrameProcessor } from 'react-native-vision-camera';
-import { useResizePlugin } from 'vision-camera-resize-plugin';
-
+import { useSkiaFrameProcessor } from 'react-native-vision-camera';
 import { VisionCameraProxy, Frame } from 'react-native-vision-camera';
-import { useState } from 'react';
 import { useSharedValue } from 'react-native-reanimated';
 import { Worklets } from 'react-native-worklets-core';
 
-const plugin = VisionCameraProxy.initFrameProcessorPlugin('detectObjects', {});
+const plugin = VisionCameraProxy.initFrameProcessorPlugin('detectObjects', {
+  model: 'mobilenet',
+});
 
 interface Result {
   confidence: number;
@@ -38,6 +37,7 @@ export const useObjectDetection = () => {
 
   const frameProcessor = useSkiaFrameProcessor((frame) => {
     'worklet';
+
     const objects = detectObjects(frame);
     frame.render();
 
@@ -46,11 +46,13 @@ export const useObjectDetection = () => {
         const paint = Skia.Paint();
         paint.setColor(Skia.Color('red'));
         paint.setStyle(1);
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(20);
 
         const rect = Skia.XYWHRect(prediction.x, prediction.y, prediction.width, prediction.height);
         frame.drawRect(rect, paint);
-        updateLabel(prediction.label);
+        if (prediction.confidence > 0.5) {
+          updateLabel(prediction.label);
+        }
       }
     });
   }, []);
